@@ -1,3 +1,4 @@
+# client.py
 import socket
 import json
 import colorama
@@ -44,12 +45,10 @@ if __name__ == "__main__":
         if not rcvd:
             print("Unexpected end of connection, server is down")
             break
-        # {
-        #  'type': ''
-        #  'value': ['green', 'yellow', '']
-        #
         rcvd_deserialized = json.loads(rcvd)
         msg_type = rcvd_deserialized['type']
+        player_name = rcvd_deserialized.get('player')
+
 
         if msg_type == 'guessed':
             print_report(guess, rcvd_deserialized['value'])
@@ -62,7 +61,9 @@ if __name__ == "__main__":
                     print("Congrats, you won!")
                     break
                 if msg_type == 'you_lost':
-                    print("Better luck next time")
+                    other_player = rcvd_deserialized['other_player']
+                    other_player_guesses = rcvd_deserialized['other_player_guesses']
+                    print(f"Better luck next time. {other_player} guessed the word in {other_player_guesses} guesses.")
                     break
             break
         if msg_type == 'out_of_guesses':
@@ -78,6 +79,8 @@ if __name__ == "__main__":
             print("Congrats, you won!")
             break
         if msg_type == 'you_lost':
-            print("Better luck next time")
+            other_player = rcvd_deserialized['other_player']
+            other_player_guesses = rcvd_deserialized['other_player_guesses']
+            print(f"Better luck next time. {other_player} guessed the word in {other_player_guesses} guesses.")
             break
     print("Thanks for playing.")

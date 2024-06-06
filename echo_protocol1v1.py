@@ -1,3 +1,4 @@
+# echo_protocol1v1.py
 import socket
 
 PORT = 5000
@@ -16,9 +17,6 @@ class SocketWrapper:
 
     def get_msg(self):
         parts = self.data.split(MSG_DELIM)
-
-        # we may have more than one message buffered, just get one
-        # and keep the rest for a later receive
         self.data = MSG_DELIM.join(parts[1:])
         return parts[0]
 
